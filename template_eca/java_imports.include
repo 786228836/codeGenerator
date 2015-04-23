@@ -1,0 +1,5 @@
+<#assign className = table.className>   
+<#assign classNameLowerCase = className?lower_case>  
+import ${basepackage}.${namespace1}.<#if namespace2??>${namespace2}.</#if>dmo.${className}Entity;
+
+import java.util.List;

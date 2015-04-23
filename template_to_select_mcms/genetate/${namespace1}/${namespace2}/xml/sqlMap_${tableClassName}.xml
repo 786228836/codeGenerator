@@ -1,0 +1,16 @@
+<#assign className = sql.tableClassName> 
+<#assign classNameLowerCase = className?lower_case>  
+
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="${classNameLowerCase}">
+	
+
+		 <!-- 查找VO实体 --> 
+	 <sql id="queryPageByCondition">
+	          ${sql.ibatisSql}                        
+	 </sql>     
+	
+
+	
+	
+</sqlMap>

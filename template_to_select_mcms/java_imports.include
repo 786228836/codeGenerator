@@ -1,0 +1,5 @@
+<#assign classNameLowerCase = className?lower_case>    
+import ${basepackage}.VO.${classNameLowerCase}.${className}VO;
+import com.suning.scf.util.page.Limit;
+import java.util.List;
+import java.util.HashMap;

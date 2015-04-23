@@ -1,0 +1,85 @@
+<#assign className = table.className>   
+<#assign classNameLowerCase = className?lower_case>  
+
+<#macro mapperEl value>${"#{"}${value}}</#macro>
+<#macro mapperE2 value>${""}${value}</#macro>
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="${classNameLowerCase}">
+	
+	<!-- 保存实体 -->
+	<sql id="save">
+		 <![CDATA[
+		INSERT
+		INTO
+			${table.sqlName}(
+				<#list table.notPkColumns as column>
+	        	${column.sqlName} <#if column_has_next>,</#if>
+	            </#list>
+			) 
+		VALUES
+			(
+				<#list table.notPkColumns as column>
+	        	<@mapperEl column.columnNameFirstLower/> <#if column_has_next>,</#if>
+                </#list>    
+			)
+		]]>
+	</sql>
+	
+	<!-- 删除实体 -->
+	<sql id="delete" >
+		 <![CDATA[
+		DELETE
+		FROM 
+			${table.sqlName}
+		WHERE
+        <#list table.compositeIdColumns as column>
+        ${column.sqlName} = <@mapperEl column.columnNameFirstLower/> <#if column_has_next>,</#if>
+		</#list>
+		]]>
+	</sql>
+	
+	<!-- 修改实体 -->
+	<sql id="update" >
+		 <![CDATA[
+		UPDATE ${table.sqlName}
+		SET
+			<#list table.notPkColumns as column>
+	        	${column.sqlName} = <@mapperEl column.columnNameFirstLower/><#if column_has_next>,</#if>
+	        </#list>
+		 WHERE
+        <#list table.compositeIdColumns as column>
+        ${column.sqlName} = <@mapperEl column.columnNameFirstLower/> <#if column_has_next>,</#if>
+		</#list>
+		]]>
+	</sql>
+	
+	<!-- 查找实体信息 -->
+	<sql id="queryPageByCondition" >
+		 <![CDATA[
+		SELECT
+			<#list table.columns as column>
+	        	${column.sqlName} as <@mapperE2 column.columnNameFirstLower/><#if column_has_next>,</#if>
+	            </#list>
+		FROM
+			${table.sqlName}
+		]]>
+			
+	</sql>
+	<!-- 依据主键查找实体信息 -->
+	<sql id="queryById">
+		 <![CDATA[
+		SELECT
+			<#list table.columns as column>
+	        	${column.sqlName}  as <@mapperE2 column.columnNameFirstLower/><#if column_has_next>,</#if>
+	          </#list>
+		FROM
+			${table.sqlName}
+		 WHERE
+        <#list table.compositeIdColumns as column>
+        ${column.sqlName} = <@mapperEl column.columnNameFirstLower/> <#if column_has_next>,</#if>
+		</#list>
+		]]>
+	</sql>
+	
+	
+</sqlMap>
